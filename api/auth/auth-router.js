@@ -17,6 +17,16 @@ router.post("/register", validateRoleName, (req, res, next) => {
       "role_name": "angel"
     }
    */
+  let user = req.body;
+  const hash = bcrypt.hashSync(user.password, 12);
+  user.password = hash;
+  Users.add(user)
+    .then(saved => {
+      if(saved)
+        res.status(201).json(saved);
+      else 
+        res.json({"message" : "Could not add user"});
+    })
 });
 
 
